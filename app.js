@@ -130,21 +130,19 @@
 
     html += '' +
       '<div class="tiles">' +
-        '<div class="tile tile-a"><p class="tile-num"><bdi dir="ltr" class="en">' + done + '/' + total + '</bdi></p><p class="tile-label">محاضرات مكتملة</p></div>' +
-        '<div class="tile tile-b"><p class="tile-num"><bdi dir="ltr" class="en">' + psetsDone() + '/' + D.psets.length + '</bdi></p><p class="tile-label">واجبات مكتملة</p></div>' +
+        '<div class="tile tile-a"><p class="tile-num"><bdi dir="ltr" class="en">' + done + '/' + total + '</bdi></p><p class="tile-label">محاضرات</p></div>' +
+        '<div class="tile tile-b"><p class="tile-num"><bdi dir="ltr" class="en">' + psetsDone() + '/' + D.psets.length + '</bdi></p><p class="tile-label">واجبات</p></div>' +
         '<div class="tile tile-c"><p class="tile-num">' + (total - done) + '</p><p class="tile-label">محاضرات باقية</p></div>' +
       '</div>';
 
     if (ps) {
       html += '' +
-        '<button class="link-card" type="button" data-action="open-pset" data-id="' + ps.id + '" data-fid="home-ps">' +
-          '<span class="link-card-text">' +
-            '<span class="label">الواجب الحالي</span>' +
-            '<span class="title-md">' + en(ps.title, true) + '</span>' +
-            '<span class="meta">' + psetMeta(ps) + '</span>' +
-          '</span>' +
+        '<button class="row-card link-card" type="button" data-action="open-pset" data-id="' + ps.id + '" data-fid="home-ps">' +
+          '<span class="label">الواجب الحالي</span>' +
+          '<span class="title-md">' + en(ps.title, true) + '</span>' +
           badge(psetStatus(ps.id)) +
           ic('chev', 'chev') +
+          '<span class="meta">' + psetMeta(ps) + '</span>' +
         '</button>';
     }
 
@@ -206,9 +204,10 @@
   function renderPsets() {
     $('#screen-psets').innerHTML = D.psets.map(function (p) {
       return '<article class="card pset" data-ps="' + p.id + '">' +
-        '<button class="pset-head" type="button" data-action="open-pset" data-id="' + p.id + '" data-fid="ps-' + p.id + '">' +
-          '<span class="pset-text"><span class="title-md">' + en(p.title, true) + '</span><span class="meta">' + psetMeta(p) + '</span></span>' +
+        '<button class="row-card pset-head" type="button" data-action="open-pset" data-id="' + p.id + '" data-fid="ps-' + p.id + '">' +
+          '<span class="title-md">' + en(p.title, true) + '</span>' +
           badge(psetStatus(p.id)) + ic('chev', 'chev') +
+          '<span class="meta">' + psetMeta(p) + '</span>' +
         '</button>' +
         segHtml(p, 'seg') +
       '</article>';

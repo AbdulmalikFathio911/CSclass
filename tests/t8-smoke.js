@@ -13,7 +13,11 @@ async function run() {
   };
 
   const { browser, context, page, errors } = await open({ state: null });
-  const saved = () => page.evaluate((k) => JSON.parse(localStorage.getItem(k)), KEY);
+  /* نقرأ المحفوظ بترتيب مفاتيح ثابت، حتى تكون المقارنة على المحتوى مش على ترتيب الإدخال */
+  const canon = (v) => (v && typeof v === 'object' && !Array.isArray(v))
+    ? Object.keys(v).sort().reduce((o, k) => { o[k] = canon(v[k]); return o; }, {})
+    : v;
+  const saved = async () => canon(await page.evaluate((k) => JSON.parse(localStorage.getItem(k)), KEY));
   const sheetHidden = () => page.evaluate(() => document.getElementById('sheet').hidden);
   const cdp = await context.newCDPSession(page);
 
@@ -104,7 +108,7 @@ async function run() {
   await download.saveAs(file);
   const backup = JSON.parse(fs.readFileSync(file, 'utf8'));
   const beforeClear = await saved();
-  step('تنزيل النسخة الاحتياطية', backup.app === 'masar' && JSON.stringify(backup.data) === JSON.stringify(beforeClear), download.suggestedFilename());
+  step('تنزيل النسخة الاحتياطية', backup.app === 'masar' && JSON.stringify(canon(backup.data)) === JSON.stringify(beforeClear), download.suggestedFilename());
 
   /* 6. مسح البيانات */
   await page.tap('[data-action="ask-clear"]');

@@ -265,18 +265,23 @@ a { color: inherit; }
 .tile-num { font-size: 24px; line-height: 32px; font-weight: 700; }
 .tile-label { font-size: 14px; line-height: 20px; color: var(--c-ink); }
 
-.link-card {
-  display: flex;
+/* صف عنوان + شارة + سهم، وتحته سطر مساعد بعرض البطاقة كامل */
+.row-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
   align-items: center;
-  gap: var(--s3);
+  column-gap: var(--s3);
+  row-gap: var(--s1);
   width: 100%;
   min-height: var(--tap);
+  text-align: right;
+}
+.row-card > .label, .row-card > .meta { grid-column: 1 / -1; }
+.link-card {
   padding: var(--s4);
   background: var(--c-surface);
   border-radius: var(--r-lg);
-  text-align: right;
 }
-.link-card-text { display: flex; flex-direction: column; gap: var(--s1); flex: 1; min-width: 0; }
 .chev { color: var(--c-ink-2); }
 
 /* ============ الشارات ============ */
@@ -377,16 +382,7 @@ a { color: inherit; }
 .empty { padding: var(--s6) var(--s4); text-align: center; color: var(--c-ink-2); font-size: 16px; line-height: 24px; }
 
 /* ============ الواجبات ============ */
-.pset-head {
-  display: flex;
-  align-items: center;
-  gap: var(--s3);
-  width: 100%;
-  min-height: var(--tap);
-  border-radius: var(--r-sm);
-  text-align: right;
-}
-.pset-text { display: flex; flex-direction: column; gap: var(--s1); flex: 1; min-width: 0; }
+.pset-head { border-radius: var(--r-sm); }
 .seg { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s2); }
 .seg-btn {
   display: flex;
@@ -488,21 +484,17 @@ a { color: inherit; }
 
 .sheet-head {
   flex: none;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  display: grid;
+  grid-template-columns: var(--tap) minmax(0, 1fr) var(--tap);
+  align-items: start;
   padding: var(--s2) var(--s2) 0;
   touch-action: none;
   cursor: grab;
 }
 .grabber {
-  position: absolute;
-  top: var(--s2);
-  left: 50%;
+  justify-self: center;
   width: 40px;
   height: 4px;
-  margin-left: -20px;
   border-radius: var(--r-pill);
   background: var(--c-line);
 }

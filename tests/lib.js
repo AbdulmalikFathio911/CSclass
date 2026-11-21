@@ -26,6 +26,16 @@ async function open(opts = {}) {
     acceptDownloads: true,
     serviceWorkers: opts.serviceWorkers || 'block'
   });
+  /* للتأكد إن الاختبارات تمسك المخالفات فعلاً: MASAR_INJECT_CSS يحقن تنسيق مخالف عمداً */
+  if (process.env.MASAR_INJECT_CSS) {
+    await context.addInitScript((css) => {
+      document.addEventListener('DOMContentLoaded', () => {
+        const s = document.createElement('style');
+        s.textContent = css;
+        document.head.appendChild(s);
+      });
+    }, process.env.MASAR_INJECT_CSS);
+  }
   const page = await context.newPage();
   const errors = [];
   page.on('pageerror', (e) => errors.push('pageerror: ' + e.message));
